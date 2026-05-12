@@ -1,0 +1,5 @@
+# Updated with user-provided testnet keys
+BINANCE_TESTNET_API_KEY=RvrWtLpwETPHHCMvoPHkSQqYh6fIxfLLHBDz3ICTwHwlifrtv3q0AnpjBGFyhtBO
+BINANCE_TESTNET_API_SECRET=WcHXFN8WdgfCINkJlAQIpyipb4RP1ibGHSrL5RT0YcDJuq8LHRZw7KoYXlFHO74j
+BINANCE_TESTNET=true
+TESTNET_BASE_URL=https://testnet.binancefuture.com

@@ -1,0 +1,65 @@
+# Unified Trading System Configuration
+system:
+  name: "Unified Trading System"
+  version: "1.0.0"
+  environment: "development"
+  debug: false
+  log_level: "INFO"
+
+perception:
+  belief_state:
+    tau_drift: 0.1
+    warning_threshold: 0.05
+    window_size: 100
+    min_samples: 30
+  feature_engineering:
+    enable_ofI: true
+    enable_I_star: true
+    enable_L_star: true
+    enable_S_star: true
+    enable_depth_imbalance: true
+
+decision:
+  aggression_controller:
+    kappa: 0.1
+    lambda_: 0.05
+    beta_max: 0.5
+    eta: 0.01
+    alpha_target: 0.5
+
+execution:
+  smart_order_router:
+    execution_eta: 0.01
+    market_impact_factor: 0.1
+    latency_base: 5
+    slippage_factor: 0.05
+
+feedback:
+  pnl_engine:
+    history_limit: 1000
+  alert_thresholds:
+    pnl_drawdown: 0.05
+    sre_latency_p95: 100.0
+    sre_error_rate: 10.0
+    learning_insight_stagnation: 0.1
+
+adaptation:
+  drift_detector:
+    tau_drift: 0.1
+    warning_threshold: 0.05
+    window_size: 100
+    min_samples: 30
+
+risk_management:
+  risk_manifold:
+    risk_sensitivity: 1.0
+    nonlinearity_factor: 0.5
+    drawdown_warning: 0.05
+    drawdown_danger: 0.10
+    drawdown_critical: 0.15
+    daily_loss_warning: 0.03
+    daily_loss_danger: 0.05
+    daily_loss_critical: 0.08
+    leverage_warning: 35.0
+    leverage_danger: 30.0
+    leverage_critical: 35.0

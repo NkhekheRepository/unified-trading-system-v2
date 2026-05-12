@@ -1,0 +1,133 @@
+# High Win Rate Configuration
+# Targeting 85%+ win rate through strict quality filtering
+# Version: 5.0 - STRICT QUALITY MODE
+
+signal_generation:
+  # Core thresholds - BALANCED for 85% win rate
+  min_confidence_threshold: 0.65
+  min_expected_return: 0.008
+  
+  # Uncertainty parameters - APEX gating
+  min_uncertainty: 0.08
+  max_uncertainty: 0.12  # APEX: Hard cap on uncertainty (reject >12%)
+  
+  # Signal strength gate (lowered for testing)
+  min_signal_strength: 0.01
+  
+  # Epistemic uncertainty gates (by regime) - TIGHTER
+  epistemic_gates:
+    crisis: 0.05
+    volatile: 0.08
+    bear: 0.10
+    recovery: 0.12
+    bull: 0.15
+  
+  # Aleatoric uncertainty gates (by regime) - TIGHTER
+  aleatoric_gates:
+    crisis: 0.02
+    volatile: 0.04
+    bear: 0.05
+    recovery: 0.08
+    bull: 0.10
+  
+  # Quality scoring bonuses/penalties - STRICTER
+  epistemic_bonus_thresholds:
+    excellent: 0.03   # < 3% epistemic = +0.15
+    good: 0.05        # < 5% = +0.10
+    moderate: 0.08     # < 8% = +0.05
+    neutral: 0.15      # < 15% = 0.0
+    poor: 0.25         # < 25% = -0.05
+    reject: 1.0        # >= 25% = -0.15
+  
+  aleatoric_bonus_thresholds:
+    excellent: 0.01   # < 1% aleatoric = +0.10
+    good: 0.03         # < 3% = +0.05
+    neutral: 0.05      # < 5% = 0.0
+    moderate: 0.10     # < 10% = -0.03
+    poor: 1.0         # >= 10% = -0.10
+  
+  # Side bias (prefer BUY) - REDUCED for balance
+  buy_bias: 0.02
+  
+  # TOP 20 FUTURES (winning peers) - highest volume = most liquid
+  symbols:
+    - BTC/USDT
+    - ETH/USDT
+    - BCH/USDT
+    - XRP/USDT
+    - LTC/USDT
+    - TRX/USDT
+    - ETC/USDT
+    - LINK/USDT
+    - XLM/USDT
+    - ADA/USDT
+    - XMR/USDT
+    - DASH/USDT
+    - ZEC/USDT
+    - XTZ/USDT
+    - BNB/USDT
+    - ATOM/USDT
+    - ONT/USDT
+    - IOTA/USDT
+    - VET/USDT
+  
+  # AVOID: Bottom 10 (loss peers - low volume, high volatility)
+  exclude_symbols:
+    - FIL/USDT
+    - RSR/USDT
+    - BEL/USDT
+    - AXS/USDT
+    - ZEN/USDT
+    - SKL/USDT
+    - GRT/USDT
+    - 1INCH/USDT
+    - CHZ/USDT
+    - SAND/USDT
+  
+  # Symbol weights (higher for top performers)
+  symbol_weights:
+    BTC/USDT: 1.0
+    ETH/USDT: 0.9
+    BCH/USDT: 0.7
+    XRP/USDT: 0.6
+    LTC/USDT: 0.6
+    TRX/USDT: 0.5
+    ETC/USDT: 0.5
+    LINK/USDT: 0.5
+    XLM/USDT: 0.4
+    ADA/USDT: 0.4
+  
+  # Adaptive threshold adjustments by regime
+  regime_threshold_adjustments:
+    bull: -0.05
+    bear: 0.05
+    volatile: 0.10
+    crisis: 0.15
+    recovery: 0.02
+  
+  # Existing settings
+  volatility_scaling: true
+  regime_filters: true
+  filter_by_uncertainty: true
+
+position_sizing:
+  high_quality: 0.10       # Quality >= 0.70 - conservative sizing
+  medium_quality: 0.03     # Quality 0.50-0.70 - smaller
+  low_quality: 0.005       # Quality < 0.50 - very small (almost none)
+
+risk_controls:
+  max_daily_trades: 8
+  win_rate_alert: 0.70
+  min_signals_per_hour: 2
+  leverage_factor: 30.0
+
+execution:
+  cycle_interval: 30.0
+  max_position_size: 0.15
+  max_daily_loss: 15000.0
+  max_orders_per_minute: 10
+
+monitoring:
+  health_check_port: 8081
+  metrics_port: 9091
+  log_level: INFO

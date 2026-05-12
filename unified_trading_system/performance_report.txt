@@ -1,0 +1,6 @@
+Realized PnL: -340.51
+Unrealized PnL: -36.98
+Total PnL: -377.49
+Closed trades: 1610 (Wins: 406, Losses: 1174)
+Win rate: 25.70%
+Average realized profit per trade: -0.2115

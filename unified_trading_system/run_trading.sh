@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /home/nkhekhe/unified_trading_system
+export BINANCE_API_KEY=vSaHcOc8LNq3VkXVB2lkbk4Vstb1wofGcQqbrdXghmGEucVLTFxxrA3A7ARKLLLW
+export BINANCE_API_SECRET=xU83NTnMGQcN0gbphjOlt83D07qT0l5ZyrYaKmnbdKftyTBj2x7N3rsFDr5u96hu
+export BINANCE_TESTNET=false
+exec python3 continuous_trading_loop_binance.py live

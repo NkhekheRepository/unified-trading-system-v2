@@ -1,0 +1,30 @@
+# Learning System Configuration
+learning:
+  # Adaptive learning parameters
+  adaptation_rate: 0.01
+  learning_window: 1000
+  min_samples_for_learning: 50
+  
+  # Uncertainty quantification
+  uncertainty_method: "ensemble"
+  num_ensemble_models: 5
+  
+  # Risk-adjusted returns
+  risk_free_rate: 0.02
+  risk_aversion: 0.5
+  
+  # Learning thresholds
+  confidence_decay: 0.995
+  performance_window: 100
+  
+  # Leverage settings for learning mode
+  leverage_critical: 50.0
+  leverage_danger: 48.0
+  leverage_warning: 45.0
+  
+  # Model update frequency
+  update_frequency: 3600  # seconds
+  batch_size: 32
+  
+  # Feature importance decay
+  feature_decay: 0.99

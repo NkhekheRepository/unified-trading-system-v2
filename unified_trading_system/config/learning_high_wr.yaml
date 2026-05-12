@@ -1,0 +1,36 @@
+# High Win Rate Learning Configuration
+learning:
+  # Adaptive learning parameters optimized for high win rate
+  adaptation_rate: 0.005
+  learning_window: 2000
+  min_samples_for_learning: 100
+  
+  # Uncertainty quantification
+  uncertainty_method: "bayesian"
+  num_ensemble_models: 3
+  
+  # Risk-adjusted returns
+  risk_free_rate: 0.02
+  risk_aversion: 0.3  # Lower risk aversion for higher win rate focus
+  
+  # Learning thresholds
+  confidence_decay: 0.998
+  performance_window: 200
+  
+  # Leverage settings for high win rate learning
+  leverage_factor: 40.0
+  
+  # Model update frequency
+  update_frequency: 1800  # seconds (more frequent for high win rate)
+  batch_size: 16
+  
+  # Feature importance decay
+  feature_decay: 0.995
+  
+  # Signal quality thresholds for high win rate
+  min_signal_quality: 0.80
+  min_expected_return: 0.001
+  
+  # Position management for high win rate
+  max_concurrent_positions: 5
+  position_holding_period: 300  # seconds

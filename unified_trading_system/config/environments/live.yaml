@@ -1,0 +1,20 @@
+# Live Environment Configuration
+# Overrides for live trading environment
+
+binance:
+  base_url: "https://fapi.binance.com"  # FIXED: Was incorrectly set to testnet URL
+
+trading:
+  mode: "LIVE"
+  # 30x Leverage Settings for $10 Account (CFA-Approved)
+  max_position_size: 0.03  # 3% of account = $0.30 margin @ 30x = $9 notional
+  max_daily_loss: 3.0  # $3 max loss (30% of $10 account)
+  max_orders_per_minute: 5  # Slower for safety
+
+logging:
+  log_dir: "logs/live"
+  log_level: "INFO"
+
+observability:
+  health_check_port: 8082
+  metrics_port: 9092

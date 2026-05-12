@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+venv/
+.pytest_cache/
+
+# Logs - never commit
+*.log
+*_output.log
+*_output.log.*
+trading_output.log
+system_output.log
+live_output.log
+enhanced_loop.log
+enhanced_loop_debug.log
+live_trading.log
+trading_loop_output.log
+trading_restart.log
+trading_watchdog.log
+system_monitor.log
+optimizer.log
+scoring.log
+*.journal.json
+*.bak
+*.bak*
+*.out
+logs/
+
+# PID files
+*.pid
+trading.pid
+.pids/
+
+# Environment files - NEVER commit
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Backup directories
+backup/
+backtesting/
+backtracking/
+crashes/
+
+# System files
+*.service
+*.pid
+.cycle_count
+unrealized_pnl.txt
+performance_report.txt
+
+# Large data files
+*.csv
+*.parquet
+*.h5
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+ Thumbs.db
+
+# Test reports
+htmlcov/
+.coverage
+.pytest_cache/

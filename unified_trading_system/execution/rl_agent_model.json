@@ -1,0 +1,13 @@
+{
+  "q_table": {
+    "(0, 2, 0, 2)": {
+      "MARKET": 0.0,
+      "LIMIT_AGGRESSIVE": 0.0,
+      "LIMIT_PASSIVE": 0.0,
+      "ICEBERG": 0.0
+    }
+  },
+  "epsilon": 0.1,
+  "execution_count": 0,
+  "total_slippage_saved": -3.0
+}

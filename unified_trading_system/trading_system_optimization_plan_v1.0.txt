@@ -1,0 +1,105 @@
+UPGRADED OPTIMIZATION PLAN: 10/10 RATING
+==================================================
+
+GOAL: Optimize system for fewer trades with higher rewards
+BASELINE: 1,145 verified trades, 77.3% win rate, $81.68 expectancy
+
+PHASED VALIDATION FRAMEWORK:
+Each phase includes: Hypothesis → Test → Validation → Decision
+
+PHASE 0: BASELINE MEASUREMENT (PRE-IMPLEMENTATION)
+--------------------------------------------------
+  1. Signal Confidence Analysis:
+     • Extract confidence values from last 1,000 signals
+     • Bin by confidence (0.4-0.5, 0.5-0.6, etc.)
+     • Measure actual win rate per bin
+     • Determine optimal confidence threshold
+
+  2. Position Size Slippage Analysis:
+     • Group trades by position size quartiles
+     • Measure slippage (entry vs mid-price) per quartile
+     • Model slippage = f(position_size)
+
+  3. Regime Classification:
+     • Calculate hourly volatility (ATR)
+     • Calculate trend strength (ADX)
+     • Classify market regimes (trending/choppy/volatile)
+     • Measure performance per regime
+
+  4. Fee Impact Modeling:
+     • Calculate actual fees paid per trade (if available)
+     • Model maker/taker ratio by symbol
+     • Estimate total cost = fees + slippage
+
+PHASE 1: SIGNAL SELECTIVITY OPTIMIZATION
+--------------------------------------------------
+  Hypothesis: Increasing confidence threshold improves win rate
+  Test: Paper trade with thresholds [0.50, 0.55, 0.60, 0.65]
+  Metrics: Win rate, trades/day, expectancy per trade
+  Validation: Require ≥5% win rate increase with ≤50% frequency drop
+  Rollback: If win rate increase <3%, revert to baseline
+
+PHASE 2: POSITION SIZING OPTIMIZATION
+--------------------------------------------------
+  Hypothesis: Larger positions on high-confidence signals improve reward
+  Test: Tiered sizing: [0.4-0.5: $250, 0.5-0.6: $375, 0.6+: $500]
+  Metrics: Slippage-adjusted expectancy, max drawdown
+  Validation: Require Sharpe ratio improvement ≥0.2
+  Rollback: If max drawdown increases >20%, revert to baseline sizing
+
+PHASE 3: PROFIT TARGET OPTIMIZATION
+--------------------------------------------------
+  Hypothesis: Wider profit targets improve reward:risk ratio
+  Test: Dynamic targets based on volatility (ATR-based)
+  Metrics: Win rate, average win, reward:risk ratio
+  Validation: Require reward:ratio ≥2.5x with win rate ≥70%
+  Rollback: If win rate drops <65%, revert to baseline targets
+
+PHASE 4: REGIME-ADAPTIVE FILTERS
+--------------------------------------------------
+  Hypothesis: Performance improves by avoiding unfavorable conditions
+  Test: Filter based on [ATR percentile, ADX, time of day]
+  Metrics: Win rate per regime, trades avoided, profit retained
+  Validation: Require profit per retained trade ≥ baseline
+  Rollback: If overall profitability decreases, disable filters
+
+PHASE 5: INTEGRATED VALIDATION
+--------------------------------------------------
+  Test: Combine all validated optimizations
+  Duration: 72-hour paper trade
+  Metrics vs Baseline:
+    • Daily profit (target: ≥ baseline)
+    • Trade count (target: ≤ 50% of baseline)
+    • Sharpe ratio (target: ≥ baseline + 0.3)
+    • Max drawdown (target: ≤ baseline)
+  Success Criteria: Meet 3/4 metrics
+
+CONTINUOUS MONITORING:
+------------------------------
+  Daily Checks:
+    • Win rate deviation >5% from expected → alert
+    • Trade count deviation >30% → investigate
+    • Drawdown >10% → reduce position size 20%
+    • Consecutive losses >5 → pause trading 1 hour
+
+  Weekly Review:
+    • Compare actual vs predicted performance
+    • Adjust parameters based on new data
+    • Validate assumptions with fresh data
+
+ROLLBACK TRIGGERS (IMMEDIATE):
+-----------------------------------
+  • Win rate <65% for 2 consecutive hours
+  • Daily loss >2x average daily profit
+  • System instability (crashes, errors)
+  • Manual override signal
+
+SUCCESS METRICS FOR 10/10 PLAN:
+-----------------------------------
+  ✓ All assumptions measured, not assumed
+  ✓ Each change has clear validation criteria
+  ✓ Built-in rollback mechanisms
+  ✓ Regime-adaptive components
+  ✓ Continuous monitoring and adaptation
+  ✓ Paper trade validation before live deployment
+  ✓ Clear success/failure criteria

@@ -1,0 +1,242 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Unified Trading System Event Schema",
+  "type": "object",
+  "required": ["event_id", "timestamp", "trace_id", "event_type", "version"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the event"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Timestamp in nanoseconds since epoch"
+    },
+    "trace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier for tracing causality across components"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "MARKET_DATA_UPDATE",
+        "BELIEF_STATE_UPDATE",
+        "FEATURES_COMPUTED",
+        "REGIME_DETECTED",
+        "AGGRESSION_UPDATE",
+        "RISK_ASSESSMENT",
+        "EXECUTION_INTENT",
+        "TRADE_EXECUTED",
+        "PERFORMANCE_METRIC",
+        "LEARNING_UPDATE",
+        "SYSTEM_HEALTH",
+        "ERROR_EVENT"
+      ],
+      "description": "Type of event"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version for evolution"
+    },
+    "source_component": {
+      "type": "string",
+      "description": "Name of the component that generated this event"
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "title": "Market Data Update",
+          "type": "object",
+          "properties": {
+            "symbol": {"type": "string"},
+            "bid_price": {"type": "number"},
+            "ask_price": {"type": "number"},
+            "bid_size": {"type": "number"},
+            "ask_size": {"type": "number"},
+            "last_price": {"type": "number"},
+            "last_size": {"type": "number"}
+          },
+          "required": ["symbol", "bid_price", "ask_price"]
+        },
+        {
+          "title": "Belief State Update",
+          "type": "object",
+          "properties": {
+            "expected_return": {"type": "number"},
+            "expected_return_uncertainty": {"type": "number"},
+            "aleatoric_uncertainty": {"type": "number"},
+            "epistemic_uncertainty": {"type": "number"},
+            "regime_probabilities": {
+              "type": "array",
+              "items": {"type": "number"},
+              "minItems": 1
+            }
+          },
+          "required": ["expected_return", "expected_return_uncertainty", "aleatoric_uncertainty", "epistemic_uncertainty", "regime_probabilities"]
+        },
+        {
+          "title": "Features Computed",
+          "type": "object",
+          "properties": {
+            "symbol": {"type": "string"},
+            "ofI": {"type": "number"},
+            "I_star": {"type": "number"},
+            "L_star": {"type": "number"},
+            "S_star": {"type": "number"},
+            "depth_imbalance": {"type": "number"},
+            "volume_imbalance": {"type": "number"},
+            "price_momentum": {"type": "number"},
+            "volatility_estimate": {"type": "number"}
+          },
+          "required": ["symbol", "ofI", "I_star", "L_star", "S_star"]
+        },
+        {
+          "title": "Regime Detected",
+          "type": "object",
+          "properties": {
+            "symbol": {"type": "string"},
+            "regime_id": {"type": "integer"},
+            "regime_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            "regime_probabilities": {
+              "type": "array",
+              "items": {"type": "number"}
+            },
+            "features_used": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          },
+          "required": ["symbol", "regime_id", "regime_confidence", "regime_probabilities"]
+        },
+        {
+          "title": "Aggression Update",
+          "type": "object",
+          "properties": {
+            "aggression_level": {"type": "number", "minimum": 0, "maximum": 1},
+            "aggression_rate": {"type": "number"},
+            "signal_strength": {"type": "number"},
+            "risk_gradient": {"type": "number"},
+            "execution_feedback": {"type": "number"}
+          },
+          "required": ["aggression_level", "signal_strength", "risk_gradient"]
+        },
+        {
+          "title": "Risk Assessment",
+          "type": "object",
+          "properties": {
+            "risk_level": {"type": "integer", "minimum": 0, "maximum": 4},
+            "risk_metrics": {
+              "type": "object",
+              "properties": {
+                "cvar": {"type": "number"},
+                "volatility": {"type": "number"},
+                "drawdown": {"type": "number"},
+                "liquidity_score": {"type": "number", "minimum": 0, "maximum": 1},
+                "correlation_risk": {"type": "number"},
+                "leverage_ratio": {"type": "number"}
+              }
+            },
+            "protective_action": {
+              "type": "string",
+              "enum": ["NONE", "REDUCE_SIZE", "RESTRICT_TRADING", "CLOSE_ALL_HALT", "MANUAL_INTERVENTION"]
+            }
+          },
+          "required": ["risk_level", "risk_metrics", "protective_action"]
+        },
+        {
+          "title": "Execution Intent",
+          "type": "object",
+          "properties": {
+            "symbol": {"type": "string"},
+            "side": {"type": "string", "enum": ["BUY", "SELL"]},
+            "quantity": {"type": "number", "exclusiveMinimum": 0},
+            "order_type": {"type": "string", "enum": ["LIMIT", "MARKET", "STOP_LIMIT"]},
+            "price": {"type": "number"},
+            "time_in_force": {"type": "string", "enum": ["GTC", "IOC", "FOK", "DAY"]},
+            "urgency": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "required": ["symbol", "side", "quantity", "order_type"]
+        },
+        {
+          "title": "Trade Executed",
+          "type": "object",
+          "properties": {
+            "symbol": {"type": "string"},
+            "side": {"type": "string", "enum": ["BUY", "SELL"]},
+            "quantity": {"type": "number"},
+            "price": {"type": "number"},
+            "timestamp": {"type": "integer"},
+            "commission": {"type": "number"},
+            "slippage": {"type": "number"},
+            "latency": {"type": "integer"}
+          },
+          "required": ["symbol", "side", "quantity", "price", "timestamp"]
+        },
+        {
+          "title": "Performance Metric",
+          "type": "object",
+          "properties": {
+            "timestamp": {"type": "integer"},
+            "pnl": {"type": "number"},
+            "unrealized_pnl": {"type": "number"},
+            "realized_pnl": {"type": "number"},
+            "drawdown": {"type": "number"},
+            "sharpe_ratio": {"type": "number"},
+            "win_rate": {"type": "number", "minimum": 0, "maximum": 1},
+            "profit_factor": {"type": "number"},
+            "total_trades": {"type": "integer"},
+            "winning_trades": {"type": "integer"}
+          },
+          "required": ["timestamp", "pnl", "unrealized_pnl", "realized_pnl", "drawdown"]
+        },
+        {
+          "title": "Learning Update",
+          "type": "object",
+          "properties": {
+            "model_version": {"type": "string"},
+            "performance_improvement": {"type": "number"},
+            "uncertainty_reduction": {"type": "number"},
+            "feature_importance": {
+              "type": "object",
+              "additionalProperties": {"type": "number"}
+            },
+            "hyperparameters": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": ["model_version", "performance_improvement", "uncertainty_reduction"]
+        },
+        {
+          "title": "System Health",
+          "type": "object",
+          "properties": {
+            "component": {"type": "string"},
+            "status": {"type": "string", "enum": ["HEALTHY", "DEGRADED", "UNHEALTHY", "OFFLINE"]},
+            "latency_ms": {"type": "number", "minimum": 0},
+            "error_rate": {"type": "number", "minimum": 0, "maximum": 1},
+            "memory_usage_mb": {"type": "number", "minimum": 0},
+            "cpu_usage_percent": {"type": "number", "minimum": 0, "maximum": 100}
+          },
+          "required": ["component", "status", "latency_ms", "error_rate"]
+        },
+        {
+          "title": "Error Event",
+          "type": "object",
+          "properties": {
+            "error_code": {"type": "string"},
+            "error_message": {"type": "string"},
+            "severity": {"type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+            "component": {"type": "string"},
+            "stack_trace": {"type": "string"},
+            "recoverable": {"type": "boolean"}
+          },
+          "required": ["error_code", "error_message", "severity", "component"]
+        }
+      ]
+    }
+  }
+}
